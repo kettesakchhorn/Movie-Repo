@@ -20,19 +20,13 @@ function onInsertRecord() {
     var movieObj = { moviename: movieName, releasedate: releaseDate, movierating: movieRating, filmindustry: filmIndustry };
 
 
-
-    if (movieName.length != 0 && releaseDate.length != 0 && movieRating.length != 0 && filmIndustry.length != 0) {} else {
-        alert("Fields cannot be empty!")
-        return false;
-    }
-
     if (selectedIndex === -1) {
         moviesArray.push(movieObj);
     } else {
         moviesArray.splice(selectedIndex, 1, movieObj);
     }
 
-    localStorage.moviesRecord = JSON.stringify(moviesArray); //convert arrays into JSON strings 
+    localStorage.moviesRecord = JSON.stringify(moviesArray); //convert arrays into strings 
 
     init();
 
@@ -46,7 +40,6 @@ function onInsertRecord() {
 function prepareTableCell(index, movieName, releaseDate, movieRating, filmIndustry) {
     var table = document.getElementById("tablerows");
     var row = table.insertRow();
-    var action = '<button  class="form__button2" onclick="onEditRecord(' + index + ')"><i class="fas fa-edit"></i></button><br/><button  class="form__button2" onclick="onDeleteRecord(' + index + ')"><i class="fas fa-trash"></i></button>';
     var movieNameCell = row.insertCell(0);
     var releaseDateCell = row.insertCell(1);
     var movieRatingCell = row.insertCell(2);
@@ -57,18 +50,14 @@ function prepareTableCell(index, movieName, releaseDate, movieRating, filmIndust
     releaseDateCell.innerHTML = releaseDate;
     movieRatingCell.innerHTML = movieRating;
     filmIndustryCell.innerHTML = filmIndustry;
-    actionCell.innerHTML = action;
-
+    actionCell.innerHTML = '<button onclick="onEditRecord(' + index + ')">Edit</button><br/><button onclick="onDeleteRecord(' + index + ')">Delete</button>';
 }
-
 
 //delete a row by updating not only the UI but also the local storage
 function onDeleteRecord(index) {
-    if (confirm("Do you want to delete this record?")) {
-        moviesArray.splice(index, 1); //to delete a particular row in a given index & replace it with a new 1
-        localStorage.moviesRecord = JSON.stringify(moviesArray);
-        init();
-    }
+    moviesArray.splice(index, 1); //to delete a particular row in a given index & replace it with a new 1
+    localStorage.moviesRecord = JSON.stringify(moviesArray);
+    init();
 }
 
 function onEditRecord(index) {
@@ -80,4 +69,7 @@ function onEditRecord(index) {
     document.getElementById("filmindustry").value = movieObj.filmindustry;
     document.getElementById("submit").innerHTML = "Update"; //when edit is clicked the insert record will be changed to Update 
 
+}
+if (onEditRecord == true) {
+    location.reload();
 }
